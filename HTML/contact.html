@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="../Style/contact.css" />
+</head> 
+<body>
+
+    <div class="contact-card">
+    <h1>Contactez-nous</h1>
+    <form id="contact-form" method="POST" action="/backend/save-contact.php">
+      <label for="first-name">Prénom</label>
+      <input type="text" id="first-name" name="first_name" required />
+
+      <label for="last-name">Nom</label>
+      <input type="text" id="last-name" name="last_name" required />
+      <label for="phone">Phone</label>
+      <input type="phone" id="phone" name="phone" required />
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+      <div id="email-error" style="color:red;"></div>
+
+      <label for="sujet">Sujet</label>
+      <input type="text" id="sujet" name="sujet" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="button" id="send-btn">Envoyer</button>
+      <p id="form-status"></p>
+    </form>
+    </div>
+
+    <!-- CONTACT INFO -->
+    <!-- CONTACT INFO -->
+<div class="contact-info">
+    <h1>Nous sommes toujours disponibles pour vous</h1>
+
+<div class="info-block">
+      <img src="/ressources/phone.png" alt="Phone" />
+    <p class="phone"><strong>Téléphone :</strong><br> +213 552 26 69 90</p>
+  
+</div>
+
+<div class="info-block">
+    <img src="/ressources/email.png" alt="Email" />
+    <p class="email"><strong>Email :</strong><br> embossmetalsevices@gmail.com</p>
+    
+</div>
+
+    <p>Contactez-nous avec :</p>
+    <div class="social-icons">
+        <img src="/ressources/facebook-icon.png" alt="Facebook" />
+        <img src="/ressources/linkedin-icon.png" alt="LinkedIn" />
+        <img src="/ressources/youtube-icon.png" alt="YouTube" />
+        <img src="/ressources/instagram-icon.png" alt="Instagram" />
+    </div>
+    
+</div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    emailjs.init("0_GDw3aP_OABy1UoU");
+
+    // ✅ Déclare tes variables ici, une fois que le DOM est chargé
+    const sendBtn = document.getElementById("send-btn");
+    const status = document.getElementById("form-status");
+    const emailInput = document.getElementById("email");
+    const emailError = document.getElementById("email-error");
+
+    sendBtn.addEventListener("click", function () {
+      const email = emailInput.value.trim();
+      const domain = email.split("@")[1];
+      const allowedDomains = ["gmail.com", "yahoo.fr", "hotmail.com", "outlook.com"];
+
+      if (!allowedDomains.includes(domain)) {
+        emailError.textContent = "Domaine d'e-mail non autorisé.";
+        return;
+      } else {
+        emailError.textContent = "";
+      }
+
+      const templateParams = {
+        first_name: document.getElementById("first-name").value.trim(),
+        last_name: document.getElementById("last-name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: email,
+        sujet: document.getElementById("sujet").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        contactable: document.querySelector('input[name="contactable"]').checked ? "on" : ""
+      };
+
+      status.textContent = "Envoi en cours...";
+
+      // Envoi via EmailJS
+      emailjs.send("service_8pb9lxd", "template_7iu836d", templateParams)
+        .then(() => {
+          status.textContent = "Message envoyé avec succès ✅";
+          document.getElementById("contact-form").reset();
+        }, (error) => {
+          console.error("Erreur EmailJS :", error);
+          status.textContent = "Erreur lors de l'envoi ❌";
+        });
+
+      // Envoi vers la base via PHP
+    fetch("../../backend/save-contact.php", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  body: new URLSearchParams(templateParams)
+})
+.then(response => response.text()) // ← On lit en texte brut
+.then(text => {
+  console.log("🔍 Réponse brute de PHP :", text); // Affiche le texte reçu
+  try {
+    const data = JSON.parse(text); // Essaie de parser
+    console.log("✅ JSON valide :", data);
+  } catch (e) {
+    console.error("❌ JSON invalide. Texte reçu :", text);
+  }
+})
+.catch(err => {
+  console.error("Erreur enregistrement PHP :", err);
+});
+
+    });
+  });
+</script>

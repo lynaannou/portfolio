@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Italiana', sans-serif;
+}
+
+body {
+  color: #000;
+  background: linear-gradient(135deg, #ffffff, #ffeff8, #ffeafe, #fadff8);
+  background-size: 400% 400%;
+    animation: backgroundShift 15s ease infinite;
+  padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 1rem 0;
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #b210b9;
+    font-weight: bold;
+}
+
+section {
+    margin-top: 2rem;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+}
+.container-content {
+    width: 200px;         /* carré : largeur = hauteur */
+    height: 200px;
+    margin: 1rem auto;    /* centrage horizontal */
+    background: #fceafa;
+    border-radius: 20px;  /* coin arrondi mais pas trop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.container-content:hover {
+    transform: scale(1.05); /* petit effet hover */
+}
+
+
+.container-content a {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+}
+.intro {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #444;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@keyframes backgroundShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
