@@ -1,0 +1,18 @@
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Web / Node / PHP
+node_modules/
+vendor/
+dist/
+build/
+.cache/
+.env
+.env.*
+*.log
+
+# Front
+*.local
